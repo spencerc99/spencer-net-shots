@@ -1,3 +1,4 @@
 - url: https://spencerchang.me/window
   output: shot.png
   height: 800
+  wait: 5000
