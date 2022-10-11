@@ -1,6 +1,6 @@
 - url: https://spencerchang.me/window
   output: shot.png
   width: 1690
-  height: 800
+  height: 1200
   wait: 8000
   wait-for: 'document.querySelector("div.window img").complete'
