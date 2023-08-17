@@ -1,0 +1,26 @@
+name: Upload screenshot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  s3-archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - uses: shallwefootball/s3-upload-action@master
+        name: Upload website.png to S3
+        id: website-archive
+        with:
+          aws_key_id: ${{ secrets.AWS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: ${{ secrets.AWS_BUCKET }}
+          source_dir: "website.png"
+          destination_dir: $DESTINATION_DIR
+        env:
+          DESTINATION_DIR: spencerchang.me-${{ steps.date.outputs.date }}
