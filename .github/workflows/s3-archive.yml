@@ -13,7 +13,8 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-      - run: pwd
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
       - name: website-archive
         shell: bash
         env:
@@ -22,9 +23,6 @@ jobs:
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           DESTINATION_DIR: spencerchang.me-${{ steps.date.outputs.date }}
         run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
           aws configure set aws_access_key_id $aws_key_id
           aws configure set aws_secret_access_key $aws_secret_access_key 
           aws configure set default.region us-east-1
