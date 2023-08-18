@@ -22,7 +22,9 @@ jobs:
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           DESTINATION_DIR: spencerchang.me-${{ steps.date.outputs.date }}
         run: |
-          sudo apt-get update && sudo apt-get -y install awscli
+          curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+          unzip awscli-bundle.zip
+          sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
           aws configure set aws_access_key_id $aws_key_id
           aws configure set aws_secret_access_key $aws_secret_access_key 
           aws configure set default.region us-east-1
