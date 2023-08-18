@@ -13,6 +13,7 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - run: ls
       - uses: shallwefootball/s3-upload-action@master
         name: Upload website.png to S3
         id: website-archive
