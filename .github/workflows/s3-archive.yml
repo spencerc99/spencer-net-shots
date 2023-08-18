@@ -14,14 +14,16 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - run: pwd
-      - uses: shallwefootball/s3-upload-action@master
-        name: Upload website.png to S3
-        id: website-archive
-        with:
+      - name: website-archive
+        shell: bash
+        env:
           aws_key_id: ${{ secrets.AWS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: "./website.png"
-          destination_dir: $DESTINATION_DIR
-        env:
           DESTINATION_DIR: spencerchang.me-${{ steps.date.outputs.date }}
+        run: |
+          sudo apt-get update && sudo apt-get -y install awscli
+          aws configure set aws_access_key_id $aws_key_id
+          aws configure set aws_secret_access_key $aws_secret_access_key 
+          aws configure set default.region us-east-1
+          aws s3 ./website.png s3://$aws_s3_bucket/$DESTINATION_DIR
