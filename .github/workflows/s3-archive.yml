@@ -26,4 +26,4 @@ jobs:
           AWS_DEFAULT_OUTPUT: json
         run: |
           aws --version
-          aws s3 ./website.png s3://$aws_s3_bucket/$DESTINATION_DIR
+          aws s3 sync ./website.png s3://$aws_s3_bucket/$DESTINATION_DIR
