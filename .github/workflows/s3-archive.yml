@@ -25,5 +25,4 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
           AWS_DEFAULT_OUTPUT: json
         run: |
-          aws --version
           aws s3 cp ./website.png s3://$aws_s3_bucket/$DESTINATION_DIR
