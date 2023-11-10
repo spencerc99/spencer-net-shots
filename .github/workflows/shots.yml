@@ -63,11 +63,19 @@ jobs:
           git commit -m "${timestamp}" || exit 0
           git pull --rebase
           git push
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshot
+          path: shot.png
   archive:
     needs: shot-scraper
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: screenshot
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
