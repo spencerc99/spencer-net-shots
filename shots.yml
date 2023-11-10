@@ -1,5 +1,6 @@
 - url: https://spencerchang.me/window
-  output: window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
+  output: window.png
+  # output: window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
   width: 1690
   height: 1200
   wait: 8000
