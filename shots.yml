@@ -1,12 +1,11 @@
 - url: https://spencerchang.me/window
-  output: window.png
-  # output: window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
+  output: window/shot.png
   width: 1690
   height: 1200
   wait: 8000
   wait-for: 'document.querySelector("div.window img").complete'
 - url: https://spencerchang.me
-  output: website.png
+  output: personal-website/shot.png
   width: 1690
   height: 1200
   wait: 4000
