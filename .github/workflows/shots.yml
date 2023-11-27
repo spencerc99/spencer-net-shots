@@ -58,6 +58,11 @@ jobs:
         run: |-
           mv personal-website/shot.png personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
           mv window/shot.png window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshot
+          path: personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
       - name: Commit and push
         run: |-
           git config user.name "Automated"
@@ -67,11 +72,6 @@ jobs:
           git commit -m "${timestamp}" || exit 0
           git pull --rebase
           git push
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshot
-          path: shot.png
   archive:
     needs: shot-scraper
     runs-on: ubuntu-latest
