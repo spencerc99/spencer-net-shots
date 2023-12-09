@@ -54,15 +54,15 @@ jobs:
       - name: Take shots
         run: |
           shot-scraper multi shots.yml
-      - name: Rename files
-        run: |-
-          mv personal-website/shot.png personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
-          mv window/shot.png window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: screenshot
-          path: personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
+          path: personal-website/shot.png
+      - name: Rename files
+        run: |-
+          mv personal-website/shot.png personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
+          mv window/shot.png window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
       - name: Commit and push
         run: |-
           git config user.name "Automated"
