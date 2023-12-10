@@ -95,4 +95,4 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
           AWS_DEFAULT_OUTPUT: json
         run: |
-          aws s3 cp ./personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png.png s3://$aws_s3_bucket/$DESTINATION_DIR
+          aws s3 cp screenshot.png | sed 's/-0\([0-9]\)-/-\1-/').png.png s3://$aws_s3_bucket/$DESTINATION_DIR
