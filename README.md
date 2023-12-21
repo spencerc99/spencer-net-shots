@@ -9,4 +9,6 @@ a simple way to regularly archive screenshots from different websites to a Githu
 
 TODO:
 
-- [ ] the shots.yml repo should probably be separate from the repo for archiving shots to avoid needing to pull those assets.
+- [ ] the shots.yml repo should probably be separate from the repo for archiving shots to avoid needing to pull those assets. (use spencer-net-shots-archive as submodule)
+- [ ] move s3 stuff to r2 for cheaper storage (https://github.com/marketplace/actions/r2-upload-action)
+- [ ] find some easier way to add new ones, currently requires a lot of manual code
