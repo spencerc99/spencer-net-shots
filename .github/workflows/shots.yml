@@ -63,6 +63,7 @@ jobs:
         run: |-
           mv personal-website/shot.png personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
           mv window/shot.png window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
+          mv fridge-poem/shot.png fridge-poem/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
       - name: Commit and push
         run: |-
           git config user.name "Automated"
@@ -80,6 +81,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: screenshot
+      - name: help
+        run: |
+          ls
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"

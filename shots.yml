@@ -9,3 +9,8 @@
   width: 1690
   height: 1200
   wait: 4000
+- url: https://playhtml.fun/fridge.html
+  output: fridge-poem/shot.png
+  width: 1690
+  height: 1200
+  wait: 4000
