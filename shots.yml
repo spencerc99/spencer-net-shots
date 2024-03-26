@@ -14,3 +14,8 @@
   width: 1690
   height: 1200
   wait: 4000
+- url: https://playhtml.fun/experiments/4
+  output: website-rainbow.png
+  width: 1690
+  height: 1200
+  wait: 4000
