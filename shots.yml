@@ -1,18 +1,12 @@
-- url: https://spencerchang.me/window
-  output: window.png
-  width: 1690
-  height: 1200
-  wait: 8000
-  wait-for: 'document.querySelector("div.window img").complete'
-- url: https://spencerchang.me
+- url: https://spencer.place
   output: website.png
   width: 1690
   height: 1200
   wait: 4000
 - url: https://playhtml.fun/fridge.html
   output: fridge-poem.png
-  width: 1690
-  height: 1200
+  width: 2700
+  height: 2700
   wait: 4000
 - url: https://playhtml.fun/experiments/4
   output: website-rainbow.png
