@@ -62,7 +62,6 @@ jobs:
       - name: Rename files
         run: |-
           mv website.png personal-website/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
-          mv window.png window/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
           mv fridge-poem.png fridge-poem/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
           mv website-rainbow.png website-rainbow/$(date '+%Y-%m-%d' | sed 's/-0\([0-9]\)-/-\1-/').png
       - name: Commit and push
@@ -102,17 +101,6 @@ jobs:
           AWS_DEFAULT_OUTPUT: json
         run: |
           aws s3 cp website.png s3://$aws_s3_bucket/$DESTINATION_DIR
-      - name: window-archive
-        shell: bash
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-          aws_s3_bucket: ${{ secrets.AWS_BUCKET }}
-          DESTINATION_DIR: window.spencerchang.me/${{ steps.date.outputs.date }}.png
-          AWS_DEFAULT_REGION: us-east-1
-          AWS_DEFAULT_OUTPUT: json
-        run: |
-          aws s3 cp window.png s3://$aws_s3_bucket/$DESTINATION_DIR
       - name: fridge-poem-archive
         shell: bash
         env:
