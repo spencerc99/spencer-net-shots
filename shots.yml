@@ -7,7 +7,7 @@
   output: fridge-poem.png
   width: 2700
   height: 2700
-  wait: 4000
+  waitForSelector: document.querySelector('.fridgeWord')
 - url: https://playhtml.fun/experiments/4
   output: website-rainbow.png
   width: 1690
