@@ -10,7 +10,7 @@ a simple way to regularly archive screenshots from different websites to a Githu
 TODO:
 
 - [ ] the shots.yml repo should probably be separate from the repo for archiving shots to avoid needing to pull those assets. (use spencer-net-shots-archive as submodule)
-
-manual steps to add a new source
+- [ ] add a way to customize how often you want to take shots for each source, naming scheme should support this if more granular than day
+      manual steps to add a new source
 
 - add a new source to shots.yml, note the output name will become the directory name in the archive
