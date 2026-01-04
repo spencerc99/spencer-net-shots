@@ -7,8 +7,14 @@
   output: fridge-poem.png
   width: 2700
   height: 2700
-  waitForSelector: document.querySelector('.fridgeWord.custom')
-  wait: 4000
+  # Wait for the loading message to disappear and words to be loaded
+  # This ensures we don't screenshot during the "Finding the words..." loading state
+  # We check that: 1) loading message is gone, 2) multiple word elements exist (at least 50)
+  wait_for: |-
+    !document.body.textContent.includes('Finding the words...') && 
+    document.querySelectorAll('.fridgeWord, [data-playhtml-element]').length > 50
+  # Additional wait after the condition is met to ensure all words are fully rendered and positioned
+  wait: 3000
 - url: https://playhtml.fun/experiments/4
   output: website-rainbow.png
   width: 1690
