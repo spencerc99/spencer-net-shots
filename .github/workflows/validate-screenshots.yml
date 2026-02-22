@@ -1,0 +1,117 @@
+name: Validate Screenshots
+
+on:
+  # Run after screenshots are taken
+  workflow_run:
+    workflows: ["Take screenshots"]
+    types:
+      - completed
+
+  # Allow manual triggering
+  workflow_dispatch:
+
+  # Run daily at 1 AM (1 hour after screenshot workflow)
+  schedule:
+    - cron: "0 1 * * *"
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Check for loading screenshots
+        id: validate
+        run: |
+          if python find-loading-screenshots.py --check --source fridge-poem; then
+            echo "validation_passed=true" >> $GITHUB_OUTPUT
+          else
+            echo "validation_passed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create issue if loading screenshots found
+        if: steps.validate.outputs.validation_passed == 'false'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const body = [
+              '## 🚨 Loading Screenshots Detected',
+              '',
+              'The fridge-poem screenshots contain loading states ("Finding the words..." box).',
+              '',
+              '### Possible Causes',
+              '- `wait_for` condition in `shots.yml` not waiting long enough',
+              '- Network issues during screenshot capture',
+              '',
+              '### Recommended Actions',
+              '1. Run locally to see which files are affected: `python find-loading-screenshots.py --check --source fridge-poem`',
+              '2. Review the flagged screenshots manually',
+              '3. Delete loading screenshots: `python find-loading-screenshots.py --delete --source fridge-poem`',
+              '4. If recurring, increase the `wait_for` timeout in `shots.yml`',
+              '',
+              `[View workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId})`,
+            ].join('\n');
+
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'screenshot-validation-failed'
+            });
+
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Loading Screenshots Detected - ${new Date().toISOString().split('T')[0]}`,
+                body: body,
+                labels: ['screenshot-validation-failed', 'automated']
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: `### New Failure\n\n${body}`
+              });
+            }
+
+      - name: Close issue if validation passing
+        if: steps.validate.outputs.validation_passed == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'screenshot-validation-failed'
+            });
+
+            if (issues.data.length > 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                body: '✅ No loading screenshots detected. All recent screenshots are valid.'
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues.data[0].number,
+                state: 'closed'
+              });
+            }
