@@ -1,3 +1,5 @@
+# ABOUTME: Captures configured websites and archives dated screenshots.
+# ABOUTME: Runs daily or on demand using shot-scraper and Playwright.
 name: Take screenshots
 
 on:
@@ -10,7 +12,8 @@ permissions:
 
 jobs:
   shot-scraper:
-    runs-on: ubuntu-latest
+    # Playwright <1.58 supports Ubuntu 24.04 but cannot install Chromium on 26.04.
+    runs-on: ubuntu-24.04
     if: ${{ github.repository != 'simonw/shot-scraper-template' }}
     steps:
       - uses: actions/checkout@v3
