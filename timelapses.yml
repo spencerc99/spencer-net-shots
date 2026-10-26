@@ -1,0 +1,28 @@
+# Timelapses rendered daily by .github/workflows/timelapses.yml and published to the
+# "timelapses" GitHub release (stable URL: releases/download/timelapses/<name>.mp4).
+#
+# Fields:
+#   name            output filename (<name>.mp4) and default source folder
+#   source          folder of dated images: <date>.png, or <date>/<page>.png for multi-page
+#   start / end     optional YYYY-MM-DD bounds
+#   fps             frames (days) per second, default 8
+#   size            longest side for single-image sources, default 1080
+#   width / height  explicit output size (multi-page default: 1920x1080 grid, 1080x1350 scroll/pages)
+#   layout          multi-page only: grid | scroll | pages
+#   skip_unchanged  drop days identical to the previous one
+#   label           draw the date in the corner, default true
+#   background      RGB padding color, default [255, 255, 255]
+
+- name: fridge-poem
+  # Earlier captures are loading-state placeholders.
+  start: 2024-02-23
+  fps: 8
+  background: [208, 225, 214]
+
+- name: website-rainbow
+  fps: 8
+
+- name: cursor-park
+  layout: grid
+  fps: 6
+  skip_unchanged: true

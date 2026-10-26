@@ -14,3 +14,34 @@ TODO:
       manual steps to add a new source
 
 - add a new source to shots.yml, note the output name will become the directory name in the archive
+
+## Timelapses
+
+`timelapses.yml` lists the archives that get turned into videos. After each daily capture, the `Render timelapses` workflow re-renders them and replaces the assets on the [`timelapses` release](../../releases/tag/timelapses), so each video has a stable URL:
+
+```
+https://github.com/spencerc99/spencer-net-shots/releases/download/timelapses/<name>.mp4
+```
+
+Render locally (needs `ffmpeg`):
+
+```bash
+python timelapse.py                        # everything in timelapses.yml → dist/
+python timelapse.py cursor-park --layout scroll --suffix=-scroll
+```
+
+Multi-page sources (one folder per day, `<date>/page-N.png`) support three layouts: `grid` (all pages at once), `scroll` (camera pans down the pages as days advance), and `pages` (each page's full timelapse in turn).
+
+### Google Docs (cursor park)
+
+`capture-gdoc.py` exports a doc as PDF and saves each page as a PNG. The daily workflow uses the public export, so the doc must be shared as "Anyone with the link can view".
+
+To backfill history from the doc's revisions (run once locally, as the doc owner):
+
+```bash
+brew install poppler
+gcloud auth login --enable-gdrive-access
+python capture-gdoc.py 1gxuxSTYS8ta912nr-GY7wToVM3yFe-PFXDa1NLQsSp8 cursor-park --backfill
+```
+
+Google merges older revisions, so early history may be sparser than one snapshot per day.

@@ -42,6 +42,12 @@ jobs:
       - name: Take shots
         run: |
           shot-scraper multi shots.yml
+      - name: Capture Google Docs
+        # A failed doc export shouldn't block the website screenshots.
+        continue-on-error: true
+        run: |
+          sudo apt-get install -y poppler-utils
+          python capture-gdoc.py 1gxuxSTYS8ta912nr-GY7wToVM3yFe-PFXDa1NLQsSp8 cursor-park
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
