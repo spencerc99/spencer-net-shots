@@ -28,6 +28,7 @@ Render locally (needs `ffmpeg`):
 ```bash
 python timelapse.py                        # everything in timelapses.yml → dist/
 python timelapse.py cursor-park --layout scroll --suffix=-scroll
+python timelapse.py cursor-park --pages "1,40-44"  # only some pages
 ```
 
 Multi-page sources (one folder per day, `<date>/page-N.png`) support three layouts: `grid` (all pages at once), `scroll` (camera pans down the pages as days advance), and `pages` (each page's full timelapse in turn).

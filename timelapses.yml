@@ -9,6 +9,7 @@
 #   size            longest side for single-image sources, default 1080
 #   width / height  explicit output size (multi-page default: 1920x1080 grid, 1080x1350 scroll/pages)
 #   layout          multi-page only: grid | scroll | pages
+#   pages           multi-page only: which pages to include, e.g. "1,40-44"
 #   skip_unchanged  drop days identical to the previous one
 #   label           draw the date in the corner, default true
 #   background      RGB padding color, default [255, 255, 255]

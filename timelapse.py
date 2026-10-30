@@ -57,6 +57,19 @@ def load_days(source):
     return sorted(days.items())
 
 
+def parse_pages(spec):
+    """Turn "1,40-44" (or a YAML list of ints) into a set of 1-based page numbers."""
+    if isinstance(spec, int):
+        return {spec}
+    if isinstance(spec, list):
+        return {int(n) for n in spec}
+    pages = set()
+    for part in str(spec).split(","):
+        start, _, end = part.strip().partition("-")
+        pages.update(range(int(start), int(end or start) + 1))
+    return pages
+
+
 def load_font(size):
     for path in FONT_PATHS:
         if os.path.exists(path):
@@ -228,6 +241,10 @@ def render(config, out_dir):
         for date, pages in days
         if (not start or date >= str(start)) and (not end or date <= str(end))
     ]
+    if config.get("pages"):
+        keep = parse_pages(config["pages"])
+        days = [(date, [p for i, p in enumerate(pages, 1) if i in keep]) for date, pages in days]
+        days = [(date, pages) for date, pages in days if pages]
     if not days:
         print(f"[{name}] no images found, skipping")
         return None
@@ -290,6 +307,7 @@ def main():
     parser.add_argument("--layout", choices=LAYOUTS, help="override the layout for paged sources")
     parser.add_argument("--source", help="override the source folder (e.g. sample data)")
     parser.add_argument("--start", help="override the start date (YYYY-MM-DD)")
+    parser.add_argument("--pages", help='only these pages of multi-page sources, e.g. "1,40-44"')
     parser.add_argument("--suffix", default="", help="append to output filenames")
     args = parser.parse_args()
 
@@ -308,6 +326,8 @@ def main():
             config["source"] = args.source
         if args.start:
             config["start"] = args.start
+        if args.pages:
+            config["pages"] = args.pages
         config["output"] = config.get("output", config["name"]) + args.suffix
         render(config, args.out)
 
