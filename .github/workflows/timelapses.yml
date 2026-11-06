@@ -1,0 +1,46 @@
+# ABOUTME: Renders timelapses.yml into MP4s after each daily capture.
+# ABOUTME: Publishes them to the "timelapses" release so download URLs stay stable.
+name: Render timelapses
+
+on:
+  workflow_run:
+    workflows: ["Take screenshots"]
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: timelapses
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Pick up the commit the screenshot run just pushed.
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          pip install pyyaml Pillow numpy
+      - name: Render
+        run: python timelapse.py --out dist
+      - name: Publish to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view timelapses > /dev/null 2>&1; then
+            gh release create timelapses --title "Timelapses" \
+              --notes "Rendered daily from the screenshot archive. Assets are replaced on every run."
+          fi
+          gh release upload timelapses dist/*.mp4 --clobber
+          gh release edit timelapses --notes "Rendered daily from the screenshot archive. Last updated $(date -u '+%Y-%m-%d %H:%M UTC')."
